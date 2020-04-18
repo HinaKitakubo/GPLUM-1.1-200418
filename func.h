@@ -159,8 +159,7 @@ PS::S32 removeOutOfBoundaryParticle(Tpsys & pp,
                                     const PS::F64 r_min,
                                     std::ofstream & fout_rem)
 {
-    //std::cout << "hello world!" << std::endl;
-    PS::F64 sum = PS::Comm::getSum(sum);
+    PS::F64 sum = 0;
     PS::S32 n = 0;      //消去する粒子数
     PS::F64 sum_n = 0;  //消去する総粒子数
     PS::F64 m_sum = 0;  //中心BHに吸収される粒子の総質量
@@ -181,13 +180,9 @@ PS::S32 removeOutOfBoundaryParticle(Tpsys & pp,
     for ( PS::S32 i=0; i<n_loc; i++ ){
         PS::F64vec posi = pp[i].pos;
         PS::F64    pos2 = posi*posi;
-        //std::cout << "pos2 = " << pos2 << std::endl;
-        //std::cout << "rmax2 = " << rmax2 << std::endl;
-        //std::cout << "rmin2 = " << rmin2 << std::endl;
         if ( pos2 > rmax2 || pos2 < rmin2 ){
 #pragma omp critical
             {
-                //std::cout << "hello hello" << std::endl;
                 remove_list.push_back(i);
                 i_remove = i;
                 if ( pos2 < rmin2 ){     //吸い込まれる位置まで近づいた場合
